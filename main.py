@@ -35,8 +35,8 @@ def is_on_screen(image) -> bool | None:
     try:  # Tries to find the image if it can't it throws an error
         if pyautogui.locateOnScreen(image, grayscale=True, confidence=0.7) is not None:
             return True
-    except pyautogui.ImageNotFoundException:  # Returns false (It didn't find)
-        return False
+    except pyautogui.ImageNotFoundException:
+        return False  # Returns false (It didn't find)
 
 
 def this_server_is_currently_full(output) -> bool | None:
