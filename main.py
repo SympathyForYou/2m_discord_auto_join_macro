@@ -37,49 +37,56 @@ def on_button() -> Union[tuple[int, int], bool]:
         return False  # And continue searching
 
 
-def this_server_is_currently_full(output) -> bool | None:
+def is_on_screen(image) -> bool | None:
     try:
-        # Searches for the full server png
-        if pyautogui.locateOnScreen('images/full_server.png', grayscale=True, confidence=0.7) is not None:
-            print("This server is currently full, refreshing:")
-            time.sleep(0.5)
+        if pyautogui.locateOnScreen(image, grayscale=True, confidence=0.7) is not None:
             return True
-        else:
-            pass
-        # Pauses the program you are back on discord (Full Server Png is visible)
     except pyautogui.ImageNotFoundException:
+        return False
+
+
+def this_server_is_currently_full(output) -> bool | None:
+    if is_on_screen('images/full_server.png'):
         if output:
-            print("Lost focus on the join button...")
-        else:
-            time.sleep(0.5)
-            return False
+            print("This server is currently full, refreshing:")
+        time.sleep(0.5)
+        return True
+    elif output:
+        print("Lost focus on the join button...")
+    time.sleep(0.5)
+    return False
 
 
 def on_discord() -> bool | None:
     if not return_to_discord:
-        try:
-            # Searches for Discord's upper right menu buttons
-            if pyautogui.locateOnScreen('menu.png', grayscale=True, confidence=0.7) is not None:
-                #print("On discord")
-                time.sleep(0.5)
-                return True
+        # Searches for Discord's upper right menu buttons
+        if is_on_screen('images/menu.png'):
+            #print("On discord")
+            time.sleep(0.5)
+            return True
             # If it can't find them it will wait (Not on Discord)
-        except pyautogui.ImageNotFoundException:
+        else:
             #print("Not on discord")
             time.sleep(0.5)
             return False
     else:
-        try:
-            # Now on discord
-            if pyautogui.locateOnScreen('menu.png', grayscale=True, confidence=0.7) is not None:
-                time.sleep(0.5)
-                pass
+        # Now on discord
+        if is_on_screen('images/menu.png'):
+            time.sleep(0.5)
+            pass
         # Get back to discord
-        except pyautogui.ImageNotFoundException:
+        else:
             print("Get back to discord")
             time.sleep(1)
             on_discord()
 
+def are_you_human() -> bool | None:
+    if is_on_screen('images/are_you_human.png'):
+        print("Human check on screen")
+        return True
+    else:
+        print("No human check on screen")
+        return False
 
 def print_time() -> None:  # Basic timer
     elapsed_time: float = time.time() - start
@@ -95,27 +102,28 @@ def print_time() -> None:  # Basic timer
 
 start: float = time.time()  # Times joining
 
+if this_server_is_currently_full(output=False):
+    keyboard.press_and_release('ctrl+r')
 
 def main() -> None:
     global attempts
     global return_to_discord
 
     while not keyboard.is_pressed('q'):  # Hold 'q' to close this script
-        # If the mouse hovers over the join button (RGB matches)
+        # If the mouse hovers over the join button (RGB matches) it will click
         if on_button():
             return_to_discord = False  # Resets return flag each attempt
             position = on_button()
             print("Button found!")
-            for i in range(5):  # Clicks twice
+            for i in range(5):  # Clicks five times
                 pyautogui.click(position[0], position[1])
-            time.sleep(1)
             print("Joining...")
             time.sleep(1)
             # If the color under the mouse changes to anything else it presumably joined successfully
-            if not this_server_is_currently_full(output=True) and on_discord():
+            if not this_server_is_currently_full(output=True) and on_discord() and not are_you_human():
                 print("Computing...")
                 time.sleep(2)
-                if not this_server_is_currently_full(output=False) and on_discord():
+                if not this_server_is_currently_full(output=False) and on_discord() and not are_you_human():
                     print("Joined.")
                     # Adds an attempt and prints za total
                     attempts += 1
@@ -133,10 +141,9 @@ def main() -> None:
             # Otherwise:
             else:
                 # Sleeps 5 seconds and checks if discord is showing
-                time.sleep(1)
                 return_to_discord = True  # Turns on window switcher
                 for i in range(refresh_time):
-                    print(f"Refreshing in {5 - i}")
+                    print(f"Refreshing in {refresh_time - i}")
                     time.sleep(0.5)
                     on_discord()
                 # Then refreshes for the next attempt
