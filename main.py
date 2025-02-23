@@ -8,7 +8,7 @@ from PIL.Image import Image  # Used to take screenshots (Server Full / Not)
 
 # Variables
 refresh_time: int = 5  # Lowering this number might get you flagged
-quit_on_join: bool = False  # Quits the program after joining: True / False
+quit_on_join: bool = True  # Quits the program after joining: True / False
 normal_color: tuple[int, int, int] = (36, 128, 69)  # The normal RGB value of the button
 hover_color: tuple[int, int, int] = (26, 99, 52)  # The RGB values of the join button while hovering
 attempts: int = 0  # Starts at 0 and gradually increases each discord
