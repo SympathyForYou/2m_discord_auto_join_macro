@@ -1,9 +1,3 @@
-# ----------------------------------------------- #
-# Hover your mouse over the join button           #
-# It will try to join if it fails it will refresh #
-# Then it will try again and stop once it joined  #
-# ----------------------------------------------- #
-
 # Used libraries
 import time  # Used to make program wait (sleep)
 from datetime import datetime  # Used to tell the current time of the OS
@@ -38,20 +32,23 @@ def on_button() -> Union[tuple[int, int], bool]:
 
 
 def is_on_screen(image) -> bool | None:
-    try:
+    try:  # Tries to find the image if it can't it throws an error
         if pyautogui.locateOnScreen(image, grayscale=True, confidence=0.7) is not None:
             return True
-    except pyautogui.ImageNotFoundException:
+    except pyautogui.ImageNotFoundException:  # Returns false (It didn't find)
         return False
 
 
 def this_server_is_currently_full(output) -> bool | None:
+    # Tries to find the discord full_server widget
     if is_on_screen('images/full_server.png'):
         if output:
             print("This server is currently full, refreshing:")
         time.sleep(0.5)
+        # If returned true it will refresh discord
         return True
-    elif output:
+    # Else don't refresh
+    elif output:  # This check makes the output silent
         print("Lost focus on the join button...")
     time.sleep(0.5)
     return False
@@ -80,6 +77,7 @@ def on_discord() -> bool | None:
             time.sleep(1)
             on_discord()
 
+
 def are_you_human() -> bool | None:
     if is_on_screen('images/are_you_human.png'):
         print("Human check on screen")
@@ -87,6 +85,7 @@ def are_you_human() -> bool | None:
     else:
         print("No human check on screen")
         return False
+
 
 def print_time() -> None:  # Basic timer
     elapsed_time: float = time.time() - start
