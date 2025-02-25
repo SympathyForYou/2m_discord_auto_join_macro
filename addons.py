@@ -8,8 +8,6 @@ from typing import Union  # Fixes type annotation
 import pyautogui  # Used to move the cursor
 from PIL.Image import Image  # Used to take screenshots (Server Full / Not)
 
-# Variables
-
 
 def on_button(normal_color: tuple[int, int, int], hover_color: tuple[int, int,int]) -> Union[tuple[int, int], bool]:
     """
