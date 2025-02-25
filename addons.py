@@ -114,7 +114,6 @@ def print_time() -> None:  # Basic timer
     """
     It elapses the time from run to end, and it prints in the output (E.g. the time it took to complete)
     Plus the current time (E.g. the time this script ended)
-    :return: None
     """
 
     elapsed_time: float = time.time() - start
