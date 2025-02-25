@@ -1,4 +1,4 @@
-from main import *
+from addons import *
 
 while True:
     # Lost focus of the join button means it can't see the full server widget
