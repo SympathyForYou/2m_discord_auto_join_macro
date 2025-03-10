@@ -1,7 +1,9 @@
 # Join Script V4
 
- Hover your mouse over the join button, it will try to join then if, it fails it will refresh. Then it will try again and stop once it joined.
- 
+Hover your mouse over the join button, it will try to join then if, it fails it will refresh. Then it will try again and stop once it joined.
+
+This program functionality been offered by: PyAutoGui & Keyboard libraries
+
 Images used:
 
 ![Capcha](images/are_you_human.png)
