@@ -3,7 +3,7 @@ import keyboard  # Used to be able to make key presses
 from addons import *
 import time
 
-# Variables
+# Top Variables
 refresh_time: int = 5  # Lowering this number might get you flagged
 quit_on_join: bool = True  # Quits the program after joining: True / False
 attempts: int = 0  # Starts at 0 and gradually increases each discord
