@@ -1,4 +1,4 @@
-# Imports
+# Import
 from main import *
 
 # Used libraries
@@ -8,12 +8,11 @@ from typing import Union  # Fixes type annotation
 import pyautogui  # Used to move the cursor
 from PIL.Image import Image  # Used to take screenshots (Server Full / Not)
 
-
-def on_button(normal_color: tuple[int, int, int], hover_color: tuple[int, int,int]) -> Union[tuple[int, int], bool]:
+def on_button(normal_rgb_tuple: tuple[int, int, int], hover_rgb_tuple: tuple[int, int,int]) -> Union[tuple[int, int], bool]:
     """
     Takes a 1 by 1 pixel screenshot, and it cheeks the color against the given colors
-    :param normal_color: The rgb tuple of the normal color of the button you want to find
-    :param hover_color: The rgb tuple of the hover color of button you want to find
+    :param normal_rgb_tuple: The rgb tuple of the normal color of the button you want to find
+    :param hover_rgb_tuple: The rgb tuple of the hover color of button you want to find
     :return: The position of the button or False bool if it doesn't match
     """
 
@@ -24,7 +23,7 @@ def on_button(normal_color: tuple[int, int, int], hover_color: tuple[int, int,in
     # Save the RBG value of the pixel
     rgb: float = screenshot.getpixel((0, 0))
     # Compare against the button
-    if rgb == hover_color or rgb == normal_color:
+    if rgb == hover_rgb_tuple or rgb == normal_rgb_tuple:
         return position[0], position[1]
     else:
         time.sleep(1)
@@ -39,7 +38,7 @@ def is_on_screen(image) -> bool | None:
     :return: True or False
     """
 
-    try:  # Tries to find the image if it can't it throws an error
+    try:  # Tries to find the image if it can't, it throws an error
         if pyautogui.locateOnScreen(image, grayscale=True, confidence=0.7) is not None:
             return True
     except pyautogui.ImageNotFoundException:
